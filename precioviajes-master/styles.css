@@ -440,14 +440,11 @@ footer {
   background-color: #00284d;
   color: white;
   width: 100%;
-
   text-align: center;
-  position: static;
-  /*deja fijado footer*/
+  position: fixed;
   left: 0;
   bottom: 0;
-  /*lleva el footer hacia el final de la página*/
-  padding: 20px;
-  /*suma un marco de 20px alrededor del footer*/
-  margin-top: 0;
+  padding: 10px; /* Reduce el padding superior e inferior */
+  height: 60px; /* Define la altura de la franja */
 }
+
