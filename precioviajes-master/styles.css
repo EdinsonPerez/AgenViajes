@@ -368,5 +368,26 @@ button[type="submit"] {
   margin-bottom: 10px;
 }
 
+.formulario{
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 8% 2%;
+  margin: 1% 35%;
+  text-align: center;
+}
 
+footer {
+  background-color: #00284d;
+  color: white;
+  width: 100%;
 
+  text-align: center;
+  position: static;
+  /*deja fijado footer*/
+  left: 0;
+  bottom: 0;
+  /*lleva el footer hacia el final de la página*/
+  padding: 20px;
+  /*suma un marco de 20px alrededor del footer*/
+  margin-top: 0;
+}
