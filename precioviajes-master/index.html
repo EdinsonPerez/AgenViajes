@@ -7,6 +7,7 @@
     <title>Inicio</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
 
 <body>
@@ -50,6 +51,11 @@
               <div id="card-container" class="row">
                 <!-- Las tarjetas se agregarán aquí dinámicamente mediante JavaScript -->
               </div>
+
+              <div id="pagination">
+                <button id="prevPage">Anterior</button>
+                <button id="nextPage">Siguiente</button>
+            </div>
             
     </div>
     
@@ -72,4 +78,111 @@
         <br>
       </footer>
 </body>
+
+<script>
+    // Variables
+    const cardContainer = document.querySelector(".row");
+    const prevButton = document.getElementById("prevPage");
+    const nextButton = document.getElementById("nextPage");
+    let currentPage = 1;
+    const countriesPerPage = 8;
+    let countriesData = []; // Aquí almacenaremos todos los países desde la API
+
+    // Función para cargar datos desde la API
+    function loadCountriesData() {
+        fetch("https://restcountries.com/v3/all")
+            .then((response) => response.json())
+            .then((data) => {
+                countriesData = data;
+                renderCountries(currentPage);
+            })
+            .catch((error) => {
+                console.error('Error al cargar los datos:', error);
+            });
+    }
+
+    // Función para renderizar países
+    function renderCountries(page) {
+        const startIndex = (page - 1) * countriesPerPage;
+        const endIndex = startIndex + countriesPerPage;
+        const countries = countriesData.slice(startIndex, endIndex);
+
+        // Limpia el contenedor de tarjetas antes de agregar nuevas tarjetas
+        cardContainer.innerHTML = "";
+
+        countries.forEach((country) => {
+            // Crea y agrega tarjetas aquí
+            // ...
+                const flag = country.flags[0]; // La URL de la bandera
+                const name = country.name.common;
+                const capital = country.capital[0];
+                const currency = country.currencies[Object.keys(country.currencies)[0]].name;
+
+                // Crea una tarjeta y agrega los datos
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                const cardHeader = document.createElement('div');
+                cardHeader.classList.add('card-header');
+                const flagImage = document.createElement('img');
+                flagImage.src = flag;
+                cardHeader.appendChild(flagImage);
+
+                const cardBody = document.createElement('div');
+                cardBody.classList.add('card-body');
+
+                const cardTitle = document.createElement('h1');
+                cardTitle.classList.add('card-title');
+                cardTitle.textContent = name;
+
+                const cardInfo = document.createElement('p');
+                cardInfo.textContent = `Capital: ${capital}, Moneda: ${currency}`;
+
+                const cardButton = document.createElement('a');
+                cardButton.href = './servicios.html'; // Agrega el enlace adecuado
+                cardButton.classList.add('btn');
+                cardButton.textContent = 'VER MÁS';
+
+                cardBody.appendChild(cardTitle);
+                cardBody.appendChild(cardInfo);
+                cardBody.appendChild(cardButton);
+
+                card.appendChild(cardHeader);
+                card.appendChild(cardBody);
+
+                // Agrega la tarjeta al contenedor de tarjetas
+                cardContainer.appendChild(card);
+            });
+            
+        
+        // Actualiza la paginación
+        updatePagination();
+    }
+
+    // Función para actualizar la paginación
+    function updatePagination() {
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled = currentPage === Math.ceil(countriesData.length / countriesPerPage);
+    }
+
+    // Event listener para la página siguiente
+    nextButton.addEventListener("click", () => {
+        if (currentPage < Math.ceil(countriesData.length / countriesPerPage)) {
+            currentPage++;
+            renderCountries(currentPage);
+        }
+    });
+
+    // Event listener para la página anterior
+    prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderCountries(currentPage);
+        }
+    });
+
+    // Carga los datos de los países al cargar la página
+    document.addEventListener("DOMContentLoaded", loadCountriesData);
+</script>
+
 </html>
